@@ -3,7 +3,7 @@
 services:
 
   pyspark_jupyter:
-      image: jupyter/pyspark-notebook:x86_64-ubuntu-22.04
+      image: drhazem95/pyspark_db_python:v1.1
       hostname: pyspark_jupyter
       container_name: pyspark_db
       ports:
@@ -65,6 +65,8 @@ services:
       - /home/hazem/pyspark_db_workflow/datasets:/usr/databases
     networks: 
       - pyspark_net
+  
+
 
 networks:
   pyspark_net:
