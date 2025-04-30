@@ -1,0 +1,74 @@
+# version: '3.7'
+
+services:
+
+  pyspark_jupyter:
+      image: jupyter/pyspark-notebook:x86_64-ubuntu-22.04
+      hostname: pyspark_jupyter
+      container_name: pyspark_db
+      ports:
+        - 8888:8888
+      restart: always
+      working_dir: /home/jovyan/work
+      networks:
+        - pyspark_net
+      environment:
+      - PUID=1000
+      - PGID=1000
+      volumes:
+       - pyspark_vol:/home/jovyan/work
+       - /home/hazem/pyspark_db_workflow/datasets:/home/jovyan/work 
+
+  mysql_db:
+    image: mysql:8.0.41-debian
+    hostname: mysql_db
+    container_name: mysql-db
+    ports:
+      - 3306:3306
+      - 33060:33060
+    restart: always
+    networks:
+      - pyspark_net
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: "P@ssw0rd"
+    volumes:
+      - /home/hazem/pyspark_db_workflow/datasets:/usr/databases
+      - pyspark_vol:/usr/databases
+
+
+  mysql-workbench:
+    image: linuxserver/mysql-workbench:latest
+    container_name: mysql-workbench
+    hostname: mysql-workbench
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - /home/hazem/pyspark_db_workflow/datasets:/usr/databases
+    ports:
+      - 3000:3000
+    cap_add:
+      - IPC_LOCK
+    restart: unless-stopped
+    networks: 
+      - pyspark_net
+
+  postgres:
+    image: postgres
+    restart: always
+    container_name: pg-db
+    hostname: pg-db
+    environment:
+      POSTGRES_PASSWORD: P@ssw0rd 
+    volumes:
+      - /home/hazem/pyspark_db_workflow/datasets:/usr/databases
+    networks: 
+      - pyspark_net
+
+networks:
+  pyspark_net:
+    driver: bridge
+    
+volumes:
+  pyspark_vol:
