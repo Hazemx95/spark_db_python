@@ -54,3 +54,6 @@ INSERT INTO employees (emp_id, emp_name, emp_address, emp_phone, emp_salary, dep
 
 TABLE employees ;
 
+SELECT * FROM customerinfo ;
+
+SELECT COUNT(1) FROM customerinfo ;
