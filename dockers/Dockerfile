@@ -11,6 +11,4 @@ RUN pip install psycopg2-binary
 RUN pip install mysql-connector
 COPY mysql-connector-java-9.3.0.jar .
 COPY postgresql-42.7.5.jar .
-ENV  JAVA_HOME=/usr/bin/java
 USER jovyan
-

@@ -2,22 +2,19 @@
 
 services:
 
-  pyspark_jupyter:
-      image: drhazem95/pyspark_db_python:v1.1
-      hostname: pyspark_jupyter
-      container_name: pyspark_db
-      ports:
-        - 8888:8888
-      restart: always
-      working_dir: /home/jovyan/work
-      networks:
-        - pyspark_net
-      environment:
-      - PUID=1000
-      - PGID=1000
-      volumes:
-       - pyspark_vol:/home/jovyan/work
-       - /home/hazem/pyspark_db_workflow/datasets:/home/jovyan/work 
+  jupyter:
+    image: drhazem95/pyspark_db_python:v1.2
+    container_name: pyspark
+    hostname: pyspark
+    restart: always
+    ports:
+      - "8888:8888"
+    volumes:
+      - pyspark_vol:/home/jovyan/work
+      - /home/hazem/pyspark_db_workflow/datasets:/home/jovyan/work
+    working_dir: /home/jovyan/work
+    networks:
+      - pyspark_net
 
   mysql_db:
     image: mysql:8.0.41-debian
@@ -71,6 +68,7 @@ services:
 networks:
   pyspark_net:
     driver: bridge
+    
     
 volumes:
   pyspark_vol:
